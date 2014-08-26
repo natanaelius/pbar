@@ -6,10 +6,21 @@ $(document).ready(function() {
       actualizar_ventas('/ventas');
     }
   });
-
-  $("a.inc").click(function(e) {
+  
+  //Agregar linea o incrementar prod
+  $("#izq").on("click","a.inc", function(e) {
     e.preventDefault();
-    actualizar_ventas($(this).attr('href'));
+    $.ajax({
+      url : $(this).attr('href'),
+      beforeSend : function(){
+        console.log('empezando');
+      },
+      success : function(data) {
+        console.log(data);
+        
+        //$(idventa).html(data);
+      }
+    });
   });
 
   $(".del-prod.btn-danger,a.del-prod").click(function(e) {
@@ -93,7 +104,7 @@ $(document).ready(function() {
       url : '/venta/nuevo',
       data : {
         nombre : $('#venta-add input').val(),
-        usuario : 'nata'
+        usuario_id : 'nata'
       },
       error : function(xhr, ajaxOptions, thrownError) {
         alert(xhr.status);

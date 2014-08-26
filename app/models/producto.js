@@ -12,6 +12,9 @@ exports.model = Bookshelf.Model.extend({
 	lineas: function() {
     return this.hasMany(Linea);
 	},
+	lineas_ns: function() {
+    return this.hasMany(Linea).query({where: {estado: 'ingresado'}});
+  },
 	ventas: function() {
     var Venta = require("./venta").model;
     return this.belongsToMany(Venta).through(Linea);

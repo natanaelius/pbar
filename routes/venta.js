@@ -48,12 +48,26 @@ exports.crear = function(req, res) {
 };
 
 exports.addProd = function(req, res) {
-  var LineaVenta  = require('../app/models/linea_venta').model;
+  var LineaVenta  = require('../app/models/linea').model;
   var Producto  = require('../app/models/producto').model;
   new Venta().query({where: {activa: true}}).fetch().then(function(venta) {
-    new Producto().query({where: {id:req.params.id}}).fetch().then(function(prod) {
+    new Producto().query({where: {id:req.params.id}}).fetch({withRelated: ['lineas_ns']}).then(function(prod) {
       if (prod != null){
-        new LineaVenta({venta_id:venta.id,producto_id:prod.id,cantidad:1,precio:prod.precio}).save().then(function(lv){
+        var en_lineas = prod.related('lineas_ns').toJSON();
+        var linea = {
+          venta_id:venta.id,
+          producto_id:prod.id,
+          cantidad:'1',
+          precio:prod.get('precio'),
+          estado:'ingresado',
+          ts:new Date()
+        };
+        if (!_.isEmpty(en_lineas)){
+          aux=en_lineas.toJSON();
+          linea.cantidad=aux[0].cantidad+1;
+          linea.id=aux[0].id;
+        }
+        new LineaVenta(linea).save().then(function(lv){
           res.json(200,lv);
         });  
       }
@@ -84,7 +98,7 @@ exports.borrar = function(req, res) {
   db.run("DELETE FROM ventas WHERE id=?", id, function(e) {
     if (e === null) {
       console.log('Venta con ID [' + id + '] ha sido borrada correctamente');
-      db.run("DELETE FROM lineaventa WHERE venta_id=?", id, function(e) {
+      db.run("DELETE FROM lineas WHERE venta_id=?", id, function(e) {
         if (e === null){
           console.log('Lineas de venta con ID [' + id + '] han sido borradas correctamente');
           return res.send({ok:1});

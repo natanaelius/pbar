@@ -58,7 +58,6 @@ Bookshelf.DB = Bookshelf.initialize({
  * Just referencing our modules, we'll go there in a moment
  */
 var user = require('./routes/user');
-var tweet = require('./routes/tweet');
 var producto = require('./routes/producto');
 var venta = require('./routes/venta');
 
@@ -88,10 +87,6 @@ app.get('/producto/:id', producto.editar);
 app.post('/producto/:id', producto.crear);
 app.get('/producto/borrar/:id', producto.borrar);
 app.get('/users', user.list);
-app.get('/tweets', tweet.list);
-app.post('/tweets', tweet.create);
-app.get('/tweets/:id', tweet.show);
-app.patch('/tweets/:id', tweet.update);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
