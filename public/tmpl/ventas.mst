@@ -1,0 +1,39 @@
+{{#ventas.msj}}
+  {{#error}}
+    <div class="alert alert-danger affix-top"><button type="button" class="close" data-dismiss="alert">&times;</button>{{error}}</div>
+  {{/error}}
+  {{#ok}}
+    <div class="alert alert-success affix-top"><button type="button" class="close" data-dismiss="alert">&times;</button>{{ok}}</div>
+  {{/ok}}
+{{/ventas.msj}}
+{{#ventas.data}}
+<div  id="venta-{{id}}">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th class='venta-head {{#activa}}venta-activa{{/activa}}' colspan='4' >
+          <a class="toogle-venta"><i class="icon-{{#activa}}minus{{/activa}}{{^activa}}plus{{/activa}}"></i></a>
+          {{nombre}} 
+          <button class="del-venta btn btn-danger pull-right" href="/venta/borrar/{{id}}" style="margin-left:2px"><i class="icon-remove-sign icon-white"></i></button>
+          <button class="act-venta btn pull-right {{#activa}}disabled{{/activa}}" href="/venta/activar/{{id}}" ><i class="icon-off"></i></button>
+          <span class="venta-total pull-right" style="margin-right:20px">&nbsp;</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody {{^activa}}style="display: none;"{{/activa}}>
+      {{#lineas}}
+        <tr>
+          <td>{{nombre}}</td>
+          <td>{{cantidad}}</td>
+          <td>{{precio}}</td>
+        </tr>
+      {{/lineas}}
+      {{^lineas}}
+        <tr>
+          <td colspan="3">No se han agregado productos</td>
+        </tr>
+      {{/lineas}}
+    </tbody>
+  </table>
+</div>
+{{/ventas.data}}

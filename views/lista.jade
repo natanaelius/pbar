@@ -1,0 +1,30 @@
+extends layout
+      
+block content  
+
+  #centro.span12
+      h2 Tabla de Productos
+      table.table.table-striped
+       thead
+        tr
+         th Producto
+         th Descripción
+         th Precio (pesos)
+         th &nbsp;
+       tbody
+        - if (productos)
+         - each producto in productos          
+           tr
+            td
+             a(href="/producto/" + producto.id.toString()) #{producto.nombre}
+            td #{producto.descripcion}
+            td #{producto.precio}
+            td
+             .btn.btn-xs.btn-danger(href="/delete-producto/" + producto.id.toString()) Borrar 
+             a.btn.btn-xs.btn-warning(href="/producto/" + producto.id.toString()) Editar
+    div.footer
+     a.btn.btn-xs.btn-primary(href='/nuevo-producto') Nuevo Producto
+  
+  
+   
+ 

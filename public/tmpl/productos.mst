@@ -1,0 +1,16 @@
+{{#productos}}
+  <div class="btn-group btn-prod" data-toggle="tooltip" title="{{precio}}" data-placement="right">
+    <div class="progress" style="height: 5px;margin-bottom: 2px;">
+      <div class="bar" style="width: {{stock}}%;"></div>
+    </div>
+    <button class="btn btn-success"> <i class="icon-glass icon-white"> </i>&nbsp;{{nombre}}</button>
+    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">▼</button>
+    <ul class="dropdown-menu">
+      <li>
+        <a class="inc" href="/venta/addProd/{{id}}">+ Agregar</a>
+        <a href="/producto/{{id}}">Editar</a>
+        <a class="del-prod" href="/producto/borrar/{{id}}">Borrar</a>
+      </li>
+    </ul>
+  </div>
+{{/productos}}                

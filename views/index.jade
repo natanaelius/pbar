@@ -1,0 +1,12 @@
+extends layout
+      
+block content  
+    hr
+    #izq.span6
+             
+    #der.span6
+        form#venta-add.form-inline(action="/nueva-venta",method="POST")
+            input(type="text",placeholder="Nombre")
+            button.btn.btn-primary +Venta
+        #ventas-cont
+   

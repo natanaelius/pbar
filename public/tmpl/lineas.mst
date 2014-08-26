@@ -1,0 +1,3 @@
+{{#data}}
+  <tr><td>{{cantidad}}</td><td>{{nombre}}</td><td>{{unitario}}</td><td>{{subtotal}}</td></tr>
+{{/data}}
