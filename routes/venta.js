@@ -6,37 +6,38 @@ var _ = require('underscore-node');
 
 var Ventas = require('../app/collections/ventas').collection;
 var Venta  = require('../app/models/venta').model;
-var lineaVentas  = require('../app/collections/linea_ventas').collection;
+var lineas  = require('../app/collections/lineas').collection;
 
 exports.list = function(req, res) {
-  new lineaVentas().fetch({withRelated: ['venta','producto']}).then(function(lv) {
-    ventas=_.groupBy(lv.toJSON(), function(d){
-      return 'venta-'+d.venta.id;
+  new Ventas().fetch({withRelated: ['prod_servido','prod_ingresado']}).then(function(collection) {
+    var ventas=collection.toJSON();
+    function calc_subtotal(arr,callback){
+      resp =_.map(arr,function(v){
+        v.prod_servido=_.map(v.prod_servido,function(p){
+          p.total=p._pivot_cantidad*p._pivot_precio;
+          return p;
+        });
+        v.prod_ingresado=_.map(v.prod_ingresado,function(p){
+          p.total=p._pivot_cantidad*p._pivot_precio;
+          return p;
+        });
+        return v;
+      });
+      return callback(resp);
+    }
+    function calc_total(arr){ 
+      
+    }
+    ventas = calc_subtotal(ventas,function(arr){
+      return _.map(arr,function(v){
+          tserv=_.isEmpty(v.prod_servido) ? 0 : _.reduce(v.prod_servido, function(memo, p){ return memo + p.total; }, 0);
+          ting=_.isEmpty(v.prod_ingresado) ? 0 : _.reduce(v.prod_ingresado, function(memo, p){ return memo + p.total; }, 0);
+          v.total_venta = ting+tserv;
+          return v;
+        });
     });
     return res.send({ventas:{data:ventas}});
   });
-  /*
-  new Ventas().fetch({withRelated: ['lineas']}).then(function(ventas) {
-    ventas.mapThen(function(venta) {
-      if (venta) {
-        var lineas = venta.related('lineas');
-        
-        lineas.mapThen(function(linea) {
-          prod = new lineaVenta({id:linea.get('id')}).fetch({withRelated: ['producto']}).then(function(lv){
-             var prod = lv.related('producto');
-             return prod;
-          });
-          p = linea.related('producto');
-          return p.toJSON();
-        }).then(function(productos){
-          console.log('prods:');console.log(productos);
-        });
-      }
-      //console.log(venta.toJSON());
-    });
-    return res.send({ventas:{data:ventas.toJSON()}});
-  });
-  */
 };
 
 exports.crear = function(req, res) {

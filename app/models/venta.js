@@ -1,15 +1,20 @@
 // Import the initialized Bookshelf
 var Bookshelf = require('bookshelf').DB;
 
-var lineaVenta = require("./linea_venta").model;
+var Linea = require("./linea").model;
 var Producto = require("./producto").model;
 
 exports.model = Bookshelf.Model.extend({
 	tableName: "ventas",
 	lineas: function() {
-	  return this.hasMany(lineaVenta);
+	  return this.hasMany(Linea);
 	},
-	productos: function() {
-    return this.hasMany(Producto).through(lineaVenta);
+	prod_ingresado: function() {
+    var Producto = require("./producto").model;
+    return this.belongsToMany(Producto).through(Linea).query({where: {estado: 'ingresado'}}).withPivot(['cantidad','precio']);
+  },
+  prod_servido: function() {
+    var Producto = require("./producto").model;
+    return this.belongsToMany(Producto).through(Linea).query({where: {estado: 'servido'}}).withPivot(['cantidad','precio']);
   }
 });

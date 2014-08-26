@@ -7,7 +7,7 @@ var Productos = require('../app/collections/productos').collection;
 var Producto  = require('../app/models/producto').model;
 
 exports.list = function(req, res) {
-  new Productos().fetch({withRelated: ['insumos']}).then(function(collection) {
+  new Productos().fetch({withRelated: ['ventas']}).then(function(collection) {
     return res.send(collection.toJSON());
   });
 };

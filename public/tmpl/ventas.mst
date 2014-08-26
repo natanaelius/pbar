@@ -7,7 +7,7 @@
   {{/ok}}
 {{/ventas.msj}}
 {{#ventas.data}}
-<div  id="venta-{{id}}">
+<div  id="venta-{{venta_id}}">
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -21,18 +21,22 @@
       </tr>
     </thead>
     <tbody {{^activa}}style="display: none;"{{/activa}}>
-      {{#lineas}}
+      {{#prod_servido}}
         <tr>
           <td>{{nombre}}</td>
-          <td>{{cantidad}}</td>
-          <td>{{precio}}</td>
+          <td>{{_pivot_cantidad}}</td>
+          <td>{{_pivot_precio}}</td>
+          <td>{{total}}</td>
         </tr>
-      {{/lineas}}
-      {{^lineas}}
-        <tr>
-          <td colspan="3">No se han agregado productos</td>
+      {{/prod_servido}}
+      {{#prod_ingresado}}
+         <tr>
+          <td>{{nombre}}</td>
+          <td>{{_pivot_cantidad}}</td>
+          <td>{{_pivot_precio}}</td>
+          <td>{{total}}</td>
         </tr>
-      {{/lineas}}
+      {{/prod_ingresado}}
     </tbody>
   </table>
 </div>
