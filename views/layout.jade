@@ -5,7 +5,6 @@ html(lang="es")
     link(rel='stylesheet', href='/bootstrap3/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap3/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/bootstrap3/css/bootstrap-theme.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
     style(type='text/css')
       |.btn-prod{margin: 3px 3px 0;}
       |.venta-activa{background-image: linear-gradient(to bottom, #428bca 0px, #2d6ca2 100%);background-repeat: repeat-x;}  
@@ -31,9 +30,4 @@ html(lang="es")
                     a(href="/iniciarp") iniciar prod
               a.btn.pull-right(href="/producto/nuevo") + 
     
-  script(src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
-  script(src='/bootstrap3/js/bootstrap.min.js')
-  script(src='/jquery-ui/jquery-ui.min.js')
-  script(src='/js/mustache.js')
-  script(src='/js/invenbar.js')  
-           
+  script(src='/js/require.js',data-main='js/main')

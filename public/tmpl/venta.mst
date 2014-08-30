@@ -1,29 +1,33 @@
 {{#venta}}
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th colspan='4' {{#activa}}style="background-image: linear-gradient(to bottom, #428bca 0px, #2d6ca2 100%);background-repeat: repeat-x;"{{/activa}}>
-        <a class="toogle-venta"><i class="icon-{{#activa}}minus{{/activa}}{{^activa}}plus{{/activa}}"></i></a>
-        {{nombre}} 
-        <button class="del-venta btn btn-danger pull-right" href="/del-venta/{{id}}" style="margin-left:2px"><i class="icon-remove-sign icon-white"></i></button>
-        <button class="act-venta btn pull-right {{#activa}}disabled{{/activa}}" href="/venta/activar/{{id}}" ><i class="icon-off"></i></button>
-        <span class="venta-total pull-right" style="margin-right:20px">&nbsp;</span>
-      </th>
-    </tr>
-  </thead>
-  <tbody {{^activa}}style="display: none;"{{/activa}}>
-    {{#lineas}}
+  <table class="table table-bordered">
+    <thead>
       <tr>
-        <td>{{nombre}}</td>
-        <td>{{cantidad}}</td>
-        <td>{{precio}}</td>
+        <th class='venta-head {{#activa}}venta-activa{{/activa}}' colspan='4' >
+          <a class="toogle-venta"><i class="icon-{{#activa}}minus{{/activa}}{{^activa}}plus{{/activa}}"></i></a>
+          {{nombre}} 
+          <button class="del-venta btn btn-danger pull-right" href="/venta/borrar/{{id}}" style="margin-left:2px"><i class="icon-remove-sign icon-white"></i></button>
+          <button class="act-venta btn pull-right {{#activa}}disabled{{/activa}}" href="/venta/activar/{{id}}" ><i class="icon-off"></i></button>
+          <span class="venta-total pull-right" style="margin-right:20px">&nbsp;</span>
+        </th>
       </tr>
-    {{/lineas}}
-    {{^lineas}}
-      <tr>
-        <td colspan="3">No se han agregado productos</td>
-      </tr>
-    {{/lineas}}
-  </tbody>
-</table>
+    </thead>
+    <tbody {{^activa}}style="display: none;"{{/activa}}>
+      {{#prod_servido}}
+        <tr class="success">
+          <td>{{nombre}}</td>
+          <td>{{_pivot_cantidad}}</td>
+          <td>{{_pivot_precio}}</td>
+          <td>{{total}}</td>
+        </tr>
+      {{/prod_servido}}
+      {{#prod_ingresado}}
+         <tr>
+          <td>{{nombre}}</td>
+          <td>{{_pivot_cantidad}}</td>
+          <td>{{_pivot_precio}}</td>
+          <td>{{total}}</td>
+        </tr>
+      {{/prod_ingresado}}
+    </tbody>
+  </table>
 {{/venta}}

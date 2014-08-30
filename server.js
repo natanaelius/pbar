@@ -23,7 +23,7 @@ var Bookshelf = require('bookshelf');
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 1337);
+app.set('port', process.env.PORT || 80);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -74,7 +74,7 @@ var venta = require('./routes/venta');
   */
 
 app.get('/', routes.index);
-app.get('/productos', producto.list);
+app.get('/productos', producto.listaJson);
 app.get('/lista', producto.lista);
 app.get('/ventas', venta.list);
 app.post('/venta/nuevo', venta.crear);

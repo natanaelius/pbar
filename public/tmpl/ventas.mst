@@ -1,12 +1,12 @@
-{{#ventas.msj}}
+{{#msj}}
   {{#error}}
     <div class="alert alert-danger affix-top"><button type="button" class="close" data-dismiss="alert">&times;</button>{{error}}</div>
   {{/error}}
   {{#ok}}
     <div class="alert alert-success affix-top"><button type="button" class="close" data-dismiss="alert">&times;</button>{{ok}}</div>
   {{/ok}}
-{{/ventas.msj}}
-{{#ventas.data}}
+{{/msj}}
+{{#ventas}}
 <div  id="venta-{{id}}">
   <table class="table table-bordered">
     <thead>
@@ -40,4 +40,4 @@
     </tbody>
   </table>
 </div>
-{{/ventas.data}}
+{{/ventas}}

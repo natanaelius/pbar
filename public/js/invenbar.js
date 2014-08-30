@@ -1,12 +1,3 @@
-$(document).ready(function() {
-  
-  $(window).load(function() {
-    if (window.location.pathname == '/'){
-      listaProds();
-      actualizar_ventas('/ventas');
-    }
-  });
-  
   //Agregar linea o incrementar prod
   $("#izq").on("click","a.inc", function(e) {
     e.preventDefault();
@@ -136,6 +127,7 @@ $(document).ready(function() {
       success : function(data) {
         $.get('/tmpl/ventas.mst', function(template) {
           var rendered = Mustache.render(template, data);
+          console.log(Mustache);
           $('#ventas-cont').html(rendered);
           $('#venta-add').trigger("reset");
         });
@@ -144,7 +136,8 @@ $(document).ready(function() {
     });
   }
   
-  function listaProds() {
+exports.listaProds =  function () {
+    console.log('emp listaProds');
     $.ajax({
       url : '/productos',
       success : function(data) {
@@ -155,7 +148,7 @@ $(document).ready(function() {
         });
       }
     });
-  }
+};
   
   Number.prototype.formatMoney = function(c, d, t){
     var n = this, 
@@ -170,5 +163,3 @@ $(document).ready(function() {
 
 
   $("#ventas-cont").sortable();
-
-});
