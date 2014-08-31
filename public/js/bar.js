@@ -39,16 +39,19 @@ function productos_cont(c, callback, fin) {
 
 //******configuro acciones de lista de ventas*******
 function ventas_cont(c, callback, fin) {
+  //Cambiar estado de linea a servido
+  $(c).on("click", "button.servido", function(e) {
+    e.preventDefault();
+    accion($(this).attr('href'), function(data) {
+      $(this).closest('tr').hide();
+      callback(data);
+    });
+  });
+  
   //acordion ventas
   $(c).on("click", "a.toogle-venta", function(e) {
     e.preventDefault();
-    if ($(this).closest('table').find('tbody').is(":visible")) {
-      $(this).closest('table').find('tbody').hide();
-      $(this).find('i').removeClass('icon-minus').addClass('icon-plus');
-    } else {
-      $(this).closest('table').find('tbody').show();
-      $(this).find('i').removeClass('icon-plus').addClass('icon-minus');
-    }
+    acordion(this);
   });
 
   //Borrar venta
@@ -132,13 +135,12 @@ function accion(link, callback) {
   });
 }
 
-function nueva_venta(contVentas,data,tmpl,callback){
-  require(['mustache'], function(Mustache) {
+function nueva_venta(contVentas,data,tmpl, Mustache,callback){
         l('cargando template...');
         var rendered = Mustache.render(tmpl, data);
         $(contVentas).prepend("<div  id='venta-"+data.venta.id+"'>"+rendered+"</div>");
+        $("#venta-"+data.venta.id).find("button.act-venta").trigger("click");
         callback();
-  });
 }
 
 function activar_venta(idventa){
@@ -147,6 +149,20 @@ function activar_venta(idventa){
   $(".venta-head button.act-venta").removeClass('disabled');
   $(idventa).find(".venta-head").addClass('venta-activa');
   $(idventa).find("button.act-venta").addClass('disabled');
+  if (!$(idventa).find('tbody').is(":visible")) {
+    $(idventa).find('tbody').show();
+    $(idventa+' .toogle-venta i').removeClass('icon-plus').addClass('icon-minus');
+  }
+}
+
+function acordion(id){
+  if ($(id).closest('table').find('tbody').is(":visible")) {
+    $(id).closest('table').find('tbody').hide();
+    $(id).find('i').removeClass('icon-minus').addClass('icon-plus');
+  } else {
+    $(id).closest('table').find('tbody').show();
+    $(id).find('i').removeClass('icon-plus').addClass('icon-minus');
+  }
 }
 
 Number.prototype.formatMoney = function(c, d, t) {

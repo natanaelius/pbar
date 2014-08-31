@@ -1,0 +1,8 @@
+{{#msj}}
+  {{#error}}
+    <div class="alert alert-danger affix-top in fade"><button type="button" class="close" data-dismiss="alert">&times;</button>{{error}}</div>
+  {{/error}}
+  {{#ok}}
+    <div class="alert alert-success affix-top in fade"><button type="button" class="close" data-dismiss="alert">&times;</button>{{ok}}</div>
+  {{/ok}}
+{{/msj}}

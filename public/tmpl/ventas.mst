@@ -1,40 +1,34 @@
-{{#msj}}
-  {{#error}}
-    <div class="alert alert-danger affix-top"><button type="button" class="close" data-dismiss="alert">&times;</button>{{error}}</div>
-  {{/error}}
-  {{#ok}}
-    <div class="alert alert-success affix-top"><button type="button" class="close" data-dismiss="alert">&times;</button>{{ok}}</div>
-  {{/ok}}
-{{/msj}}
 {{#ventas}}
 <div  id="venta-{{id}}">
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th class='venta-head {{#activa}}venta-activa{{/activa}}' colspan='4' >
+        <th class='venta-head {{#activa}}venta-activa{{/activa}}' colspan='5' >
           <a class="toogle-venta"><i class="icon-{{#activa}}minus{{/activa}}{{^activa}}plus{{/activa}}"></i></a>
           {{nombre}} 
           <button class="del-venta btn btn-danger pull-right" href="/venta/borrar/{{id}}" style="margin-left:2px"><i class="icon-remove-sign icon-white"></i></button>
           <button class="act-venta btn pull-right {{#activa}}disabled{{/activa}}" href="/venta/activar/{{id}}" ><i class="icon-off"></i></button>
-          <span class="venta-total pull-right" style="margin-right:20px">&nbsp;</span>
+          <span class="venta-total pull-right" style="margin-right:20px">${{total_ventaF}}</span>
         </th>
       </tr>
     </thead>
     <tbody {{^activa}}style="display: none;"{{/activa}}>
       {{#prod_servido}}
         <tr class="success">
+          <td></td>
           <td>{{nombre}}</td>
           <td>{{_pivot_cantidad}}</td>
-          <td>{{_pivot_precio}}</td>
-          <td>{{total}}</td>
+          <td>${{precio}}</td>
+          <td>${{totalF}}</td>
         </tr>
       {{/prod_servido}}
       {{#prod_ingresado}}
          <tr>
+          <td><button class="servido btn" href="/linea/servido/{{_pivot_id}}"><i class="icon-ok"></i></button></td>
           <td>{{nombre}}</td>
           <td>{{_pivot_cantidad}}</td>
-          <td>{{_pivot_precio}}</td>
-          <td>{{total}}</td>
+          <td>${{precio}}</td>
+          <td>${{totalF}}</td>
         </tr>
       {{/prod_ingresado}}
     </tbody>

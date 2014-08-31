@@ -2,30 +2,32 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th class='venta-head {{#activa}}venta-activa{{/activa}}' colspan='4' >
+        <th class='venta-head {{#activa}}venta-activa{{/activa}}' colspan='5' >
           <a class="toogle-venta"><i class="icon-{{#activa}}minus{{/activa}}{{^activa}}plus{{/activa}}"></i></a>
           {{nombre}} 
           <button class="del-venta btn btn-danger pull-right" href="/venta/borrar/{{id}}" style="margin-left:2px"><i class="icon-remove-sign icon-white"></i></button>
           <button class="act-venta btn pull-right {{#activa}}disabled{{/activa}}" href="/venta/activar/{{id}}" ><i class="icon-off"></i></button>
-          <span class="venta-total pull-right" style="margin-right:20px">&nbsp;</span>
+          <span class="venta-total pull-right" style="margin-right:20px">${{total_venta}}</span>
         </th>
       </tr>
     </thead>
     <tbody {{^activa}}style="display: none;"{{/activa}}>
       {{#prod_servido}}
-        <tr class="success">
+        <tr id='linea-{{_pivot_id}}' class="success">
+          <td class='td-servido'></td>
           <td>{{nombre}}</td>
           <td>{{_pivot_cantidad}}</td>
-          <td>{{_pivot_precio}}</td>
-          <td>{{total}}</td>
+          <td>${{precio}}</td>
+          <td>${{totalF}}</td>
         </tr>
       {{/prod_servido}}
       {{#prod_ingresado}}
-         <tr>
+         <tr id='linea-{{_pivot_id}}'>
+          <td class='td-servido'><button class="servido btn" href="/linea/servido/{{_pivot_id}}"><i class="icon-ok"></i></button></td>
           <td>{{nombre}}</td>
           <td>{{_pivot_cantidad}}</td>
-          <td>{{_pivot_precio}}</td>
-          <td>{{total}}</td>
+          <td>${{precio}}</td>
+          <td>${{totalF}}</td>
         </tr>
       {{/prod_ingresado}}
     </tbody>
