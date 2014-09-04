@@ -94,20 +94,11 @@ exports.crear = function(req, res) {
 exports.borrar = function(req, res) {
   if ( typeof req.user != 'undefined') {
     var id = req.params.id;
-    db = require("../sqlite3");
-    db.run("DELETE FROM productos WHERE id=?", id, function(e) {
-      if (e === null) {
-        console.log('Venta con ID [' + id + '] ha sido borrada correctamente');
-        db.run("DELETE FROM insumos_productos WHERE producto_id=?", id, function(e) {
-          if (e === null) {
-            return res.redirect('/');
-          } else {
-            console.log('Error', e);
-          }
-
+    new Producto({id:req.params.id}).fetch().then(function(model){
+        return model.destroy().then(function () {
+          console.log('destroyed!');
+          return res.render('index',{usuario : req.user, msj:{ok:'Producto borrado correctamente!'}});
         });
-      } else
-        console.log('Error', e);
     });
   } else {
     return res.redirect('/login');

@@ -267,45 +267,6 @@ exports.borrar = function(req, res) {
         });
       });
     });
-    
-    
-    /*
-    db = require("../sqlite3");
-    db.run("DELETE FROM ventas WHERE id=?", id, function(e) {
-      if (e === null) {
-        msj = 'Venta con ID [' + id + '] ha sido borrada correctamente. ';
-        db.run("DELETE FROM lineas WHERE venta_id=?", id, function(e) {
-          if (e === null) {
-            msj += 'Lineas de venta con ID [' + id + '] han sido borradas correctamente';
-            return res.json(200, {
-              key : 'delVenta',
-              ok : true,
-              msj : {
-                ok : msj
-              }
-            });
-          } else {
-            msj += 'Error al borrar lineas de venta con ID [' + id + ']';
-            return res.json(200, {
-              key : 'delVenta',
-              ok : false,
-              msj : {
-                error : msj
-              }
-            });
-          }
-
-        });
-      } else
-        return res.json(200, {
-          key : 'delVenta',
-          ok : false,
-          msj : {
-            error : 'error al borrar venta'
-          }
-        });
-    });
-    */
   } else {
     return res.json(200, {
       msj : {
