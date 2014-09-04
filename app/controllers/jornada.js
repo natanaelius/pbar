@@ -43,7 +43,7 @@ exports.crear = function(req, res) {
         } 
         else {
           req.session.jornada = model.get('id');
-          return res.json(200,{key:'verJor',msj:{error:'Ya existe una jornada activa'}}); 
+          return res.render('index',{key:'verJor',msj:{error:'Ya existe una jornada activa'}}); 
         }
     });
   } else {

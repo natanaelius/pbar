@@ -101,11 +101,13 @@ function cargar_acciones(c, callback, fin) {
 
   }); 
   
-  //crear nueva venta
+  //crear nueva jornada
+  /*
   $(c).on("submit", "#jor-add", function(e) {
     e.preventDefault();
     accion('/jor/nuevo',function(data){callback(data);});
   }); 
+  */
   
   fin();
 }

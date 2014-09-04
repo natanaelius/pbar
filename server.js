@@ -73,7 +73,7 @@ var routes = require('./app/controllers');
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/jor', jornada.ver);
-app.get('/jor/nuevo', jornada.crear);
+app.post('/jor/nuevo', jornada.crear);
 app.get('/jor/fin', jornada.terminar);
 app.get('/productos', producto.listaJson);
 app.get('/lista', producto.lista);
