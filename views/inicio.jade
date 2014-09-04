@@ -14,10 +14,11 @@ html(lang="es")
     #content
       #pacman
       #msj
-      hr
       #cuerpo
-        #izq.span7             
-        #der.span5
+        .span5
+        .span7
+          form#jor-add.form-inline(method="POST", action="/jor/nuevo")
+            button.btn.btn-primary.btn-large(style="margin-top:200px") empezar Jornada >>
       #botonera.span12
         div.navbar.navbar-inverse.navbar-fixed-bottom
            div.navbar-inner
@@ -33,8 +34,6 @@ html(lang="es")
                     a(href="/") Inicio
                   li 
                     a(href="/lista") Lista
-              a.btn.pull-left(href="/producto/nuevo") + 
-              a.btn.fin-jornada.pull-left(href="jor/fin",style="margin-left:5px") Terminar Jornada
               .btn-group.dropup.pull-right 
                 button.btn 
                     i.icon-user 

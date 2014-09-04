@@ -6,10 +6,13 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "3.4.7",
-    "jade": "*",
-    "bookshelf": "0.6.2",
-    "sqlite3": "*",
-    "underscore-node": "*"
+    "express": "3.9.x",
+    "jade": "1.6.0",
+    "bookshelf": "0.7.7",
+    "sqlite3": "2.2.7",
+    "crypto": "0.0.3",
+    "passport": "0.2.1",
+    "passport-local": "1.0.0",
+    "underscore-node": "0.1.2"
   }
 }

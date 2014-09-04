@@ -1,18 +1,15 @@
-
 /**
  * Module dependencies.
  */
 
 /* If you're following along, this is a good starting point.
- * But first, look inside package.json. Note that we had to grab the mysql 
+ * But first, look inside package.json. Note that we had to grab the mysql
  * library from npm.
  * Most of this code is just scaffolding from Express.
  */
 
 var express = require('express');
-
-//CONTROLADORES
-var routes = require('./routes');
+var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 
 var http = require('http');
 var path = require('path');
@@ -23,6 +20,12 @@ var Bookshelf = require('bookshelf');
 var app = express();
 
 // all environments
+app.use(express.cookieParser());
+app.use(express.session({
+  secret : 'almud bar'
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.set('port', process.env.PORT || 80);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -40,40 +43,38 @@ if ('development' == app.get('env')) {
 }
 
 /* Okay, this just follows the Bookshelf documentation.
- * Note that we're initializing to Bookshelf.DB. This way we can refer to the 
- * initalized Bookshelf in the future, since we're only supposed to do it once 
+ * Note that we're initializing to Bookshelf.DB. This way we can refer to the
+ * initalized Bookshelf in the future, since we're only supposed to do it once
  * per app.
  *
  * (port is 8889 because I was running my DB off MAMP)
  */
 
 Bookshelf.DB = Bookshelf.initialize({
-  	client: 'sqlite3',
-    connection: {
-        filename : './bar.sqlite3'
-    },
-    debug: true
-  });
-/*
- * Just referencing our modules, we'll go there in a moment
- */
-var user = require('./routes/user');
-var producto = require('./routes/producto');
-var venta = require('./routes/venta');
+  client : 'sqlite3',
+  connection : {
+    filename : './bar.sqlite3'
+  },
+  debug : true
+});
 
-/* These are the routes we're going to use.
- * These are fairly standard routes for a REST API. Yes, I didn't bother to 
- * finish implementing users.
- * 
- * Let's go over to the Tweet model in /app/models/tweet first.
- */
+passport.use(new LocalStrategy(function(username, password, done) {
+  return check_auth_user(username, password, done);
+}));
 
- /*
-  * Once you've finished checking out all the models, look at /app/collections
-  * then /routes
-  */
+//CONTROLADORES
+var user = require('./app/controllers/user');
+var producto = require('./app/controllers/producto');
+var venta = require('./app/controllers/venta');
+var jornada = require('./app/controllers/jornada');
 
+//RUTAS
+var routes = require('./app/controllers');
 app.get('/', routes.index);
+app.get('/users', user.list);
+app.get('/jor', jornada.ver);
+app.get('/jor/nuevo', jornada.crear);
+app.get('/jor/fin', jornada.terminar);
 app.get('/productos', producto.listaJson);
 app.get('/lista', producto.lista);
 app.get('/ventas', venta.list);
@@ -89,7 +90,35 @@ app.get('/producto/:id', producto.editar);
 app.post('/producto/:id', producto.crear);
 app.get('/producto/borrar/:id', producto.borrar);
 app.get('/users', user.list);
+app.get('/login', user.login);
+app.post('/login',passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: false }));
+app.get('/logout', function(req, res){  req.logout();  res.redirect('/login'); });
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+function check_auth_user(username, password, done, public_id) {
+  var User = require('./app/models/user').model;
+  var passGen = require('./app/password');
+  new User()
+      .query({where:{username:username}})
+      .fetch()
+      .then(function(model) {
+        var user=model.toJSON();
+        console.log(user);
+        console.log('ok: '+passGen.validate(user.password,password));
+        if (model===null || !passGen.validate(user.password,password)){
+          return done(null, false);
+        }   
+        else {         
+          passport.serializeUser(function(user, done) {
+            done(null, user);
+          });
+          passport.deserializeUser(function(id, done) {
+            done(null, user);
+          });
+          return done(null, user);
+        }
+    });
+}

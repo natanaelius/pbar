@@ -38,62 +38,65 @@ require(['domReady','jquery'], function(domReady,j) {
   domReady(function() {
     console.log('DOM listo..');
     //j('#pacman').addClass('pacman');
-    require(['bar','mustache', 'text!tmpl/productos.mst', 'text!tmpl/ventas.mst', 'text!tmpl/venta.mst', 'text!tmpl/msj.mst']
-      , function(bar, Mustache, tmpl_productos, tmpl_ventas, tmpl_venta, tmpl_msj) {
+    require(['bar','mustache', 'text!tmpl/jornada.mst', 'text!tmpl/productos.mst', 'text!tmpl/ventas.mst', 'text!tmpl/venta.mst', 'text!tmpl/msj.mst']
+      , function(bar, Mustache, tmpl_jor, tmpl_productos, tmpl_ventas, tmpl_venta, tmpl_msj) {
       var debug = true;
       if (window.location.pathname == '/') {
         l('---raiz---');
-        act_cont_ajax('#izq', '/productos', tmpl_productos, Mustache);
-        act_cont_ajax('#ventas-cont', '/ventas', tmpl_ventas, Mustache);
-      }
-      //cargo acciones
-      productos_cont('#izq', 
-        function(data) {
-        //callback acciones prod
-        l(data.msj);
-        if (typeof data.msj != 'undefined'){
-          act_cont('#msj', {msj:data.msj}, tmpl_msj, Mustache);
-          window.setTimeout(function() { l('timer');$(".alert").alert('close'); }, 4000);
-        }
-        switch (data.key){
-          case 'addProd':
-            l('id: '+data.venta.id);
-            act_cont('#venta-'+data.venta.id, data, tmpl_venta, Mustache);
-            break;
-          default:
-            break;
-        }
-      }, function() {
-          //callback fin productos
-          ventas_cont('#der',
-            function(data){
-              //callback acciones ventas
-              l('callback ventas');
-              l(data);
+        accion('/jor',function(j){
+          l('jornada:');l(j);
+          if(typeof j.msj == 'undefined'){
+            act_cont_ajax('#izq', '/productos', tmpl_productos, Mustache);
+            act_cont_ajax('#der', '/ventas', tmpl_ventas, Mustache);
+            
+            //cargo acciones
+            cargar_acciones('#cuerpo', 
+              function(data) {
+              //callback acciones prod
               if (typeof data.msj != 'undefined'){
                 act_cont('#msj', {msj:data.msj}, tmpl_msj, Mustache);
                 window.setTimeout(function() { l('timer');$(".alert").alert('close'); }, 4000);
               }
+              l(data);
               switch (data.key){
+                case 'addProd':
+                  l('id: '+data.venta.id);
+                  act_cont('#venta-'+data.venta.id, data, tmpl_venta, Mustache);
+                  break;
                 case 'nuevaVenta':
                   l('nueva venta:');
                   nueva_venta('#ventas-cont',data,tmpl_venta, Mustache,function(){
-                    console.log($('#venta'+data.venta.id).val());
+                    l('nueva venta lista');
                   });
                   break;
                 case 'servido':
                   l('servido:');
                   act_cont_ajax('#venta-'+data.linea.venta_id, '/venta/'+data.linea.venta_id, tmpl_venta, Mustache);
                   break;
+                case 'verVenta':
+                  $('#ventas-cont').sortable();
+                  break;
+                case 'listaVentas':
+                  $('#ventas-cont').sortable();
+                  break;
                 default:
                   break;
-              }
+              };
             }, function() {
-              //callback fin ventas
+              //callback fin 
               l('acciones cargadas!');
             });
-      });
-
+          } else {
+            //act_cont('#msj', {msj:j.msj}, tmpl_msj, Mustache);
+            act_cont_ajax('#der', '/jor', tmpl_jor, Mustache);
+            $('#izq').addClass('span5');
+          }
+        });
+            
+      }
+      else if (window.location.pathname == '/jor/fin') {
+        
+      }
       j('#pacman').hide();
 
     });
@@ -108,7 +111,6 @@ function act_cont_ajax(c, url, tmpl, Mustache) {
         l('cargando template...');
         var rendered = Mustache.render(tmpl, data);
         $(c).html(rendered);
-        $(c).sortable();
       }
     });
 }

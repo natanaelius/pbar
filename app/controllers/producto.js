@@ -3,8 +3,8 @@
  * GET home page.
  */
 
-var Productos = require('../app/collections/productos').collection;
-var Producto  = require('../app/models/producto').model;
+var Productos = require('../collections/productos').collection;
+var Producto  = require('../models/producto').model;
 
 exports.listaJson = function(req, res) {
   new Productos().fetch({withRelated: ['ventas']}).then(function(collection) {
@@ -13,18 +13,24 @@ exports.listaJson = function(req, res) {
 };
 
 exports.lista = function(req, res) {
-  new Productos().fetch({withRelated: ['insumos']}).then(function(collection) {
-    return res.render('lista', {
-      title : 'Lista de Productos',
-      productos : collection.toJSON()
+  if ( typeof req.user != 'undefined') {
+    new Productos().fetch({withRelated: ['insumos']}).then(function(collection) {
+      return res.render('lista', {
+        title : 'Lista de Productos',
+        productos : collection.toJSON(),
+        usuario: req.user
+      });
     });
-  });
+   } else {
+    return res.redirect('/login');
+  }
 };
 
 exports.nuevo = function (req,res) {
   return res.render('show_edit', {
       title : 'Nuevo Producto',
       producto : {}
+      , usuario: req.user
     });
 };
 

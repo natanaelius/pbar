@@ -7,7 +7,7 @@
           {{nombre}} 
           <button class="del-venta btn btn-danger pull-right" href="/venta/borrar/{{id}}" style="margin-left:2px"><i class="icon-remove-sign icon-white"></i></button>
           <button class="act-venta btn pull-right {{#activa}}disabled{{/activa}}" href="/venta/activar/{{id}}" ><i class="icon-off"></i></button>
-          <span class="venta-total pull-right" style="margin-right:20px">${{total_venta}}</span>
+          <span class="venta-total pull-right" style="margin-right:20px">${{total_ventaF}}</span>
         </th>
       </tr>
     </thead>

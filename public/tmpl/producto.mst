@@ -1,4 +1,4 @@
-{{#productos}}
+{{#producto}}
   <div class="btn-group btn-prod" data-toggle="tooltip" title="{{precio}}" data-placement="right">
     <div class="progress" style="height: 5px;margin-bottom: 2px;">
       <div class="bar" style="width: {{stock}}%;"></div>
@@ -13,4 +13,4 @@
       </li>
     </ul>
   </div>
-{{/productos}}                
+{{/producto}}                

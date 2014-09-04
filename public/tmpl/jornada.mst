@@ -1,0 +1,3 @@
+<form class="form-inline" method="POST" action="/jor/nuevo" id="jor-add">
+  <button class="btn btn-primary btn-large">empezar Jornada >></button>
+</form>  

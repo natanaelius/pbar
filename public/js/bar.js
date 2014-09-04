@@ -1,7 +1,7 @@
 var debug = true;
 l('Iniciando app...');
 
-function productos_cont(c, callback, fin) {
+function cargar_acciones(c, callback, fin) {
   //Agregar linea o incrementar prod
   $(c).on("click", "a.inc", function(e) {
     e.preventDefault();
@@ -35,10 +35,7 @@ function productos_cont(c, callback, fin) {
     }
   });
   fin();
-}
-
 //******configuro acciones de lista de ventas*******
-function ventas_cont(c, callback, fin) {
   //Cambiar estado de linea a servido
   $(c).on("click", "button.servido", function(e) {
     e.preventDefault();
@@ -90,20 +87,26 @@ function ventas_cont(c, callback, fin) {
       timeout : 5000,
       url : '/venta/nuevo',
       data : {
-        nombre : $('#venta-add input').val(),
-        usuario_id : 'nata'
+        nombre : $('#venta-add input').val()
       },
       error : function(xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
       },
       success : function(data) {
-        //console.log(data);
+        l('VENTA: ');l(data);
         callback(data);
       }
     });
 
   }); 
+  
+  //crear nueva venta
+  $(c).on("submit", "#jor-add", function(e) {
+    e.preventDefault();
+    accion('/jor/nuevo',function(data){callback(data);});
+  }); 
+  
   fin();
 }
 
@@ -129,6 +132,7 @@ function accion(link, callback) {
       l(link + ': empezando acción...');
     },
     success : function(data) {
+      l(data);
       callback(data);
       //$(idventa).html(data);
     }
@@ -136,10 +140,11 @@ function accion(link, callback) {
 }
 
 function nueva_venta(contVentas,data,tmpl, Mustache,callback){
-        l('cargando template...');
+        l('cargando template para nueva venta...');
         var rendered = Mustache.render(tmpl, data);
         $(contVentas).prepend("<div  id='venta-"+data.venta.id+"'>"+rendered+"</div>");
         $("#venta-"+data.venta.id).find("button.act-venta").trigger("click");
+        $(contVentas).sortable();
         callback();
 }
 

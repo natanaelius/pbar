@@ -33,16 +33,4 @@ html(lang="es")
                     a(href="/") Inicio
                   li 
                     a(href="/lista") Lista
-              a.btn.pull-left(href="/producto/nuevo") + 
-              a.btn.fin-jornada.pull-left(href="jor/fin",style="margin-left:5px") Terminar Jornada
-              .btn-group.dropup.pull-right 
-                button.btn 
-                    i.icon-user 
-                    span &nbsp; 
-                    span=usuario.nombre 
-                button.btn.dropdown-toggle(data-toggle="dropdown") 
-                    span.caret 
-                ul.dropdown-menu 
-                    li 
-                        a(href="/logout") Salir 
   script(src='/js/require.js',data-main='/js/main')

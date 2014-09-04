@@ -1,3 +1,10 @@
+ CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+  `nombre` TEXT, 
+  `user` TEXT, 
+  `password` TEXT, 
+  `ts` DATETIME);
+ 
  CREATE TABLE IF NOT EXISTS `insumos` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
   `nombre` TEXT,
@@ -50,6 +57,8 @@ CREATE TABLE IF NOT EXISTS `jornadas` (
   `ts` DATETIME
   );
   
+INSERT INTO `usuarios` (`nombre`,`user`,`password`,`ts`) VALUES ('Administrador','admin','abrazo1313',datetime());
+
 INSERT INTO `productos` (`nombre`,`descripcion`,`precio`,`stock`,`ts`) VALUES ('CLOVER CLUB','Gin, jugo de limón, granadina y clara de huevo',3000,20,datetime());
 INSERT INTO `productos` (`nombre`,`descripcion`,`precio`,`stock`,`ts`) VALUES ('GIN FIZZ','Gin, sour mix y soda',3000,20,datetime());
 INSERT INTO `productos` (`nombre`,`descripcion`,`precio`,`stock`,`ts`) VALUES ('JOHN COLLINS','Gin, limón y soda',3500,20,datetime());
